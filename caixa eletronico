@@ -1,0 +1,106 @@
+package fag;
+
+import java.util.Scanner;
+
+public class CaixaEletronico {
+
+	    static  double saldo = 0.0;
+	    static double LimiteDiario = 500.00;
+	    static double SaqueDiario = 0.0;
+	    static String senhaCorreta = "usuario";
+	    
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+     Scanner sc= new Scanner(System.in);
+    
+     if (!verificarSenha(sc)) {
+    	 System.out.println("Acesso Bloqueado. Tente Novamente Mais Tarde.");
+    	 sc.close();
+    	 return;
+    	}
+      
+     // Menu Principal //
+     int opcao = 0;
+     while (opcao != 4) {
+     System.out.println ("\n ----- Caixa Eletronico -----");
+     System.out.println ("1 - Consultar Saldo");
+     System.out.println ("2 - Depositar Dinheiro");
+     System.out.println ("3 - Sacar Dinheiro");
+     System.out.println ("4 - Para Sair ");
+     System.out.println (" Escolha uma opcao: ");
+     opcao = sc.nextInt();
+     
+	if (opcao == 1) {
+		consultarSaldo();
+	} else if (opcao == 2) {
+		depositar(sc);
+	} else if (opcao == 3) {
+	    sacar(sc);
+	} else if (opcao == 4) {
+		System.out.println ("Obrigado Por Usar O Caixa");
+	} else { System.out.println (" Opcao Invalida, Tente Novamente ");
+         
+	}
+	
+     }
+	 sc.close();
+	}
+
+	 
+	public static boolean verificarSenha (Scanner scanner) {
+	int tentativas = 0;
+	while (tentativas <= 3) {
+		System.out.println ("Digite a sua Senha: ");
+		String senha = scanner.nextLine();
+		
+		if (senha.equals(senhaCorreta)) {
+			return true; 
+		}
+		else { tentativas++;
+		System.out.printf("Senha Incorreta. Tentativa " + tentativas + "/3");
+		
+		}
+	}
+	  return false;
+	}
+	
+	public static void consultarSaldo() {
+		System.out.printf ("Seu Saldo Atual e: R$ %.2f%n", saldo);
+	}
+	
+	public static void depositar(Scanner scanner) {
+		System.out.println("Digite o valor do deposito: ");
+		double deposito = scanner.nextDouble();
+	 
+		if (deposito <= 0) {
+			System.out.println("Valor Invalido, tem que ser positivo.");
+			} else { 
+				saldo += deposito;
+				System.out.println("Deposito efetuado com sucesso!");
+				consultarSaldo();
+				
+			}
+		
+	}
+	
+	public static void sacar (Scanner scanner) {
+		System.out.println("Digite o valor que deseja sacar: ");
+		double saque = scanner.nextDouble();
+		
+		if (saque <= 0) {
+			System.out.println("Valor invalido!");
+			} else if (saque > saldo) {
+				System.out.println("Saldo Insuficiente (voce nao tem dinheiro) ");
+			} else if ((SaqueDiario + saque) > LimiteDiario) {
+				System.out.printf("Limite Diario Excedido! voce ainda pode sacar R$ %.2f%n", (LimiteDiario - SaqueDiario));
+				
+				} else { 
+					saldo -= saque;
+					SaqueDiario += saque;
+					System.out.println("Saque Realizado com Sucesso");
+					consultarSaldo();
+				}
+	}
+	
+	
+}
